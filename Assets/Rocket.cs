@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
+[System.Obsolete]
 
 public class Rocket : MonoBehaviour
 {
@@ -10,11 +11,14 @@ public class Rocket : MonoBehaviour
     [SerializeField] AudioClip mainEngine;
     [SerializeField] AudioClip crashSound;
     [SerializeField] AudioClip winSound;
-    [SerializeField] AudioClip startSound;
-    //Unlike AudioSource AudioClip.volume doesnot exists
+    [SerializeField] AudioClip startSound;//Unlike AudioSource AudioClip.volume doesnot exists
+
+    ParticleSystem[] allParticles;
+    Light[] allLights;
 
     //Constant Fields
     const float minVol = 0.3f;
+    float flamesize;
     public int currentLvl;
     public enum State { Alive, Dying, Transcending }
     public static State state;
@@ -22,16 +26,19 @@ public class Rocket : MonoBehaviour
     Rigidbody rigidBody;
     AudioSource audioSource;
 
-    // Start is called before the first frame update
     void Start()
     {
+        allParticles = gameObject.GetComponentsInChildren<ParticleSystem>();
+        allLights = gameObject.GetComponentsInChildren<Light>();
         currentLvl = SceneManager.GetActiveScene().buildIndex;
         rigidBody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         LaunchScript.lvlStart = true;
+        LightDeactivate();
         state = State.Alive;
     }
-    // Update is called once per frame
+
+
     void Update()
     {
         if (state != State.Dying)
@@ -41,6 +48,7 @@ public class Rocket : MonoBehaviour
         }
     }
 
+    //Collision Control
     public void OnCollisionEnter(Collision collision)
     {
         if(state != State.Alive) { return;}
@@ -66,9 +74,11 @@ public class Rocket : MonoBehaviour
         state = State.Dying;
         audioSource.Stop();
         audioSource.PlayOneShot(crashSound);
+        DeathParticles();
+        NoThrustParticles();
+        LightDeactivate();
         Invoke("LoadSameLvl", 2f);
     }
-
     private void StartSuccessSequence()
     {
         state = State.Transcending;
@@ -77,6 +87,7 @@ public class Rocket : MonoBehaviour
         Invoke("LoadNextLvl", 1f);
     }
 
+    //Scene Control
     private void LoadSameLvl()
     {
         SceneManager.LoadScene(currentLvl);
@@ -86,18 +97,23 @@ public class Rocket : MonoBehaviour
         SceneManager.LoadScene(currentLvl + 1);
     }
 
+    //Input Control
     private void RespondToThrustInput()
     {
         if (Input.GetKey(KeyCode.Space))
         {
+            ThrustParticles();
             float thrustThisFrame = mainThrust * Time.deltaTime;
             rigidBody.AddRelativeForce(Vector3.up * thrustThisFrame);//'up' and 'forward' have unit 1
             VolumeControl();
+            LightActivate();
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        else
         {
-            //audioSource.Stop();                       //|tag2|
+            audioSource.Stop();                         //|tag2|
             VolumeControl(minVol);                      //|tag1|
+            NoThrustParticles();
+            LightDeactivate();
         }
     }
     private void RespondToRotateInput()
@@ -116,6 +132,7 @@ public class Rocket : MonoBehaviour
         rigidBody.freezeRotation = false; //Resume physics Control
     }
 
+    //Volume Control
     //If not using AudioClip use this                   //|tag1|
     private void VolumeControl(float minVol)
     {
@@ -131,6 +148,75 @@ public class Rocket : MonoBehaviour
         if (audioSource.volume <= minVol)
         {
             audioSource.volume = 1f;
+        }
+    }
+
+    //Particle Effects and Triggers
+    private void DeathParticles()
+    {
+        foreach (ParticleSystem p in allParticles)
+        {
+            if (p.gameObject.tag == "ExplosionEffect")
+            {
+                if (!p.isPlaying)
+                {
+                    p.Play();
+                }
+            }
+        }
+    }
+    private void ThrustParticles()
+    {
+        foreach (ParticleSystem p in allParticles)
+        {
+            if (p.gameObject.tag == "BoosterEffect")
+            {
+                flamesize = p.startSize;
+                if (!p.isPlaying)
+                {
+                    p.startSize = Booster_Extra.flameSize;
+                    p.startSpeed = Booster_Extra.flameSpeed;
+                    p.Play();
+                }
+                Booster_Extra.FlameSizeShapeBehaviour(p);
+            }
+        }
+    }
+    private void NoThrustParticles()
+    {
+        foreach (ParticleSystem p in allParticles)
+        {
+            if (p.gameObject.tag == "BoosterEffect")
+            {
+                if (p.startSize >= 0 && p.time >= 0.3f)
+                {
+                    p.startSize = 0;
+                }
+            }
+        }
+    }
+
+    //Light
+    private void LightDeactivate()
+    {
+        foreach (Light l in allLights)
+        {
+            if(l.gameObject.tag == "BoosterEffect")
+            {
+                if (l.enabled)
+                    l.enabled = !l.enabled;
+            }
+        }
+    }
+    private void LightActivate()
+    {
+        foreach (Light l in allLights)
+        {
+            if (l.gameObject.tag == "BoosterEffect")
+            {
+                if (!l.enabled)
+                    l.enabled = !l.enabled;
+            }
         }
     }
 }
