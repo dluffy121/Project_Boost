@@ -84,7 +84,7 @@ public class Rocket : MonoBehaviour
         state = State.Transcending;
         audioSource.Stop();
         audioSource.PlayOneShot(winSound);
-        Invoke("LoadNextLvl", 1f);
+        Invoke("LoadNextLvl", 2f);
     }
 
     //Scene Control

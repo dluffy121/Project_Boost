@@ -691,17 +691,17 @@ PrefabInstance:
     - target: {fileID: 321035865500660819, guid: dcbc96cc8b60ffb4dbd6fdbaefab3690,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 18.45
       objectReference: {fileID: 0}
     - target: {fileID: 321035865500660819, guid: dcbc96cc8b60ffb4dbd6fdbaefab3690,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 7.69
       objectReference: {fileID: 0}
     - target: {fileID: 321035865500660819, guid: dcbc96cc8b60ffb4dbd6fdbaefab3690,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20
+      value: -10.66
       objectReference: {fileID: 0}
     - target: {fileID: 321035865500660819, guid: dcbc96cc8b60ffb4dbd6fdbaefab3690,
         type: 3}
@@ -4595,6 +4595,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Starboard Booster Flame
+      objectReference: {fileID: 0}
+    - target: {fileID: 4968520896770568033, guid: 0d5418542f797cc46a0b2beeebedce29,
+        type: 3}
+      propertyPath: m_Name
+      value: Port Booster Flame
       objectReference: {fileID: 0}
     - target: {fileID: 5035944997208305922, guid: 0d5418542f797cc46a0b2beeebedce29,
         type: 3}
