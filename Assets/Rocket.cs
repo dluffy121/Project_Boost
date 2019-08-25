@@ -20,7 +20,7 @@ public class Rocket : MonoBehaviour
     const float minVol = 0.3f;
     float flamesize;
     public int currentLvl;
-    public enum State { Alive, Dying, Transcending }
+    public enum State { Alive , Moving, Dying, Transcending }
     public static State state;
 
     Rigidbody rigidBody;
@@ -38,7 +38,6 @@ public class Rocket : MonoBehaviour
         state = State.Alive;
     }
 
-
     void Update()
     {
         if (state != State.Dying)
@@ -51,7 +50,7 @@ public class Rocket : MonoBehaviour
     //Collision Control
     public void OnCollisionEnter(Collision collision)
     {
-        if(state != State.Alive) { return;}
+        if(state == State.Dying) { return;}
         switch(collision.gameObject.tag)
         {
             case "Friendly":
@@ -102,6 +101,7 @@ public class Rocket : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
+            state = State.Moving;
             ThrustParticles();
             float thrustThisFrame = mainThrust * Time.deltaTime;
             rigidBody.AddRelativeForce(Vector3.up * thrustThisFrame);//'up' and 'forward' have unit 1
