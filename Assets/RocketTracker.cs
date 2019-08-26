@@ -15,12 +15,13 @@ public class RocketTracker : MonoBehaviour
 
     private Camera cam;
     public Vector3 offset= new Vector3(0.0f,1f,0.0f);
-    
 
-    public float yangle = 0.0f;
-    public float xangle = 0.0f;
-    public float xdistance = 0.0f;
-    public float ydistance = 8f;
+    const float speed = 0.5f;
+
+    float yangle = 0.0f;
+    float xangle = 0.0f;
+    float xdistance = 0.0f;
+    float zdistance = 10f;
 
     private void Start()
     {
@@ -38,13 +39,13 @@ public class RocketTracker : MonoBehaviour
     {
         if(!Input.GetKey(KeyCode.Space))
         {
-            if (ydistance >= 10f)
-                ydistance -= 0.05f;
+            if (zdistance >= 10f)
+                zdistance -= 0.05f;
         }
         if (!Input.GetKey(KeyCode.D))
         {
             if (xdistance >= 0f)
-                xdistance -= 0.05f;
+                xdistance -= 0.05f * speed;
             if (yangle >= 0f && xangle<=0f)
             {
                 yangle -= 0.5f;
@@ -54,7 +55,7 @@ public class RocketTracker : MonoBehaviour
         if (!Input.GetKey(KeyCode.A))
         {
             if (xdistance <= 0f)
-                xdistance += 0.05f;
+                xdistance += 0.05f * speed;
             if (yangle <= 0f && xangle <=0f)
             {
                 yangle += 0.5f;
@@ -66,8 +67,8 @@ public class RocketTracker : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            if (ydistance <= 12f)
-                ydistance += 0.1f;
+            if (zdistance <= 12f)
+                zdistance += 0.1f;
         }
         if (Input.GetKey(KeyCode.D))
         {
@@ -98,7 +99,7 @@ public class RocketTracker : MonoBehaviour
 
     private void CameraMovement()
     {
-        Vector3 dir = new Vector3(xdistance, 0, -ydistance);
+        Vector3 dir = new Vector3(xdistance, 0, -zdistance);
         Quaternion rotation = Quaternion.Euler(xangle, yangle, -xangle);
         camTransform.position = lookAt.position + Constants.offset + rotation * dir;
     }
