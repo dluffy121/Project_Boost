@@ -112,15 +112,9 @@ public class Rocket : MonoBehaviour
     }
     private void LoadNextLvl()
     {
-        if(currentLvl + 1 < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(currentLvl + 1);
-        }
-        else
-        {
-            currentLvl = 0;
-            SceneManager.LoadScene(currentLvl);
-        }
+        if(currentLvl + 1 == SceneManager.sceneCountInBuildSettings)
+            currentLvl = -1;
+        SceneManager.LoadScene(currentLvl + 1);
     }
 
     //Input Control
