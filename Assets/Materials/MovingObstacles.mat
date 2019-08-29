@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MovingObstacles
-  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION _GLOSSYREFLECTIONS_OFF
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
@@ -71,9 +71,9 @@ Material:
     - _DstBlend: 0
     - _EnableExternalAlpha: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.78
+    - _Glossiness: 0.765
     - _GlossyReflections: 0
-    - _Metallic: 1
+    - _Metallic: 0.369
     - _Mode: 0
     - _OcclusionStrength: 0.1
     - _Parallax: 0.02
@@ -83,8 +83,8 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0, g: 1, b: 0.06278086, a: 1}
-    - _EmissionColor: {r: 0.8705506, g: 0.03413924, b: 0, a: 1}
+    - _Color: {r: 0.7241798, g: 0.8018868, b: 0.011347434, a: 1}
+    - _EmissionColor: {r: 2.4623954, g: 0.09982684, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.509434, g: 0, b: 0.04063322, a: 1}
