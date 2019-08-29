@@ -54,6 +54,7 @@ public class Rocket : MonoBehaviour
         }
     }
 
+    //Debugging Options
     private void RespondToDebugKeys()
     {
         if(Input.GetKeyDown(KeyCode.L))
@@ -138,18 +139,20 @@ public class Rocket : MonoBehaviour
     }
     private void RespondToRotateInput()
     {
-        rigidBody.freezeRotation = true;//To rotate naturally without physics
-
-        float rotationThisFrame = rcsThrust * Time.deltaTime;
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(Vector3.forward * rotationThisFrame);
+            FreezeRotation(rcsThrust * Time.deltaTime);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(-Vector3.forward * rotationThisFrame);
+            FreezeRotation(-rcsThrust * Time.deltaTime);
         }
-        rigidBody.freezeRotation = false; //Resume physics Control
+    }
+    private void FreezeRotation(float rotationThisFrame)
+    {
+        rigidBody.freezeRotation = true;    //To rotate naturally without physics
+        transform.Rotate(Vector3.forward * rotationThisFrame);
+        rigidBody.freezeRotation = false;   //Resume physics Control
     }
 
     //Volume Control
@@ -162,7 +165,7 @@ public class Rocket : MonoBehaviour
     {
         if (!audioSource.isPlaying)//so it doesnt Layer //|tip|
         {
-            audioSource.PlayOneShot(mainEngine);        //|tag2|
+            //audioSource.PlayOneShot(mainEngine);        //|tag2|
             audioSource.Play();
         }
         if (audioSource.volume <= minVol)
